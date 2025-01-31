@@ -1,0 +1,67 @@
+package laboratory2;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+public class Main {
+
+    public static void usersSortedByLastName(List<User> someUsers) {
+        someUsers.stream()
+                .sorted(Comparator.comparing(User::getlastName))
+                .filter(user -> user.getAge() > 7)
+                .map(user -> user.getlastName() + " " + user.getId() + " " + user.getfirstName() + " "  + user.getAge() + " " + user.getCountry())
+                .forEach(System.out::println);
+    }
+
+    public static void usersSortedByAge(List<User> someUsers) {
+        someUsers.stream()
+                .sorted(Comparator.comparing(User::getAge))
+                .filter(user -> user.getAge() > 7)
+                .map(user -> user.getAge() + " " + user.getlastName() + " " + user.getId() + " " + user.getfirstName() + " "  +  " " + user.getCountry())
+                .forEach(System.out::println);
+    }
+
+    public static boolean ageCheck (List<User> someUsers){
+        return someUsers.stream()
+                .allMatch(user -> user.getAge() > 7);
+    }
+
+    public static double getAverageAge(List<User> someUsers){
+        return someUsers.stream()
+                .mapToInt(User::getAge)
+                .average()
+                .orElse(0);
+    }
+
+    public static long calculateUniqueCountries(List<User> someUsers){
+        return someUsers.stream()
+                .map(User::getCountry)
+                .distinct()
+                .count();
+    }
+
+
+
+    public static void main(String[] args) {
+        List<User> someUsers = new ArrayList<>();
+        someUsers.add(new User(1, "Ирина", "Иванова", 3, "Россия"));
+        someUsers.add(new User(2, "Ахмед", "Хан", 30, "Пакистан"));
+        someUsers.add(new User(3, "Лео", "Смит", 17, "Великобритания"));
+        someUsers.add(new User(4, "София", "Мюллер", 22, "Германия"));
+
+        System.out.println("\nСортировка пользователей по фамилии:");
+        usersSortedByLastName(someUsers);
+
+        System.out.println("\nСортировка пользователей по возрасту:");
+        usersSortedByAge(someUsers);
+
+        double averageAge = getAverageAge(someUsers);
+        System.out.println("\nСредний возраст  пользователей:\n " + averageAge);
+
+        System.out.println("\nКоличество разных стран проживания:\n" + calculateUniqueCountries (someUsers));
+
+    }
+
+
+}
